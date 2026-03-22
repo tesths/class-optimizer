@@ -170,6 +170,22 @@ alembic upgrade head && _startup
 
 也就是每次启动先做迁移，再启动 FastAPI。
 
+## 迁移失败后的重试方式
+
+如果 Zeabur 后端部署时卡在 Alembic 迁移，先看失败发生在哪一步：
+
+- 如果是刚建的新库，最稳妥的做法是直接删除这个 PostgreSQL 服务后重新创建，或新建一个全新的 PostgreSQL 服务再把 `DATABASE_URL` 指过去
+- 如果不想重建数据库，就进入数据库手动检查是否已经留下半成品表，尤其是 `alembic_version`
+- 只要数据库处于“部分表已建成、迁移却没跑完”的状态，下一次重试就可能继续报错
+
+这次仓库已经修正了 PostgreSQL 下初始迁移的建表顺序问题，所以：
+
+1. 先确保 backend 服务拉到最新代码
+2. 再确认 `DATABASE_URL` 指向的是一个干净的 PostgreSQL 库
+3. 最后点击 `Redeploy Service`
+
+如果你看到的是旧失败记录，而不是新代码的问题，清空旧库状态通常比在 Zeabur 控制台里反复重试更快。
+
 ## 本地与生产的区别
 
 - 本地默认仍是 SQLite：`backend/data/class_optimizer.db`

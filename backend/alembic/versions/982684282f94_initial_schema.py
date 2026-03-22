@@ -32,20 +32,6 @@ def upgrade() -> None:
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_users_username'), ['username'], unique=True)
 
-    op.create_table('group_members',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('group_id', sa.Integer(), nullable=False),
-    sa.Column('student_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.ForeignKeyConstraint(['group_id'], ['student_groups.id'], ),
-    sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('group_id', 'student_id', name='uix_group_student')
-    )
-    with op.batch_alter_table('group_members', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_group_members_group_id'), ['group_id'], unique=False)
-        batch_op.create_index(batch_op.f('ix_group_members_student_id'), ['student_id'], unique=False)
-
     op.create_table('teacher_profiles',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
@@ -124,6 +110,20 @@ def upgrade() -> None:
     with op.batch_alter_table('students', schema=None) as batch_op:
         batch_op.create_index(batch_op.f('ix_students_class_id'), ['class_id'], unique=False)
         batch_op.create_index(batch_op.f('ix_students_group_id'), ['group_id'], unique=False)
+
+    op.create_table('group_members',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('group_id', sa.Integer(), nullable=False),
+    sa.Column('student_id', sa.Integer(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.ForeignKeyConstraint(['group_id'], ['student_groups.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('group_id', 'student_id', name='uix_group_student')
+    )
+    with op.batch_alter_table('group_members', schema=None) as batch_op:
+        batch_op.create_index(batch_op.f('ix_group_members_group_id'), ['group_id'], unique=False)
+        batch_op.create_index(batch_op.f('ix_group_members_student_id'), ['student_id'], unique=False)
 
     op.create_table('class_teachers',
     sa.Column('id', sa.Integer(), nullable=False),
