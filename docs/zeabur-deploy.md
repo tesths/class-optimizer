@@ -24,7 +24,7 @@
 ## 已做的仓库适配
 
 - `frontend/zbpack.json`：固定前端构建命令和输出目录
-- `backend/zbpack.json`：启动前自动执行 Alembic 迁移
+- `backend/zbpack.json`：启动前先等待数据库就绪，再执行 Alembic 迁移
 - `backend/requirements.txt`：加入 PostgreSQL 驱动 `psycopg[binary]`
 - `backend/app/core/config.py`：自动把 `postgresql://...` 转成 SQLAlchemy 可用的 `postgresql+psycopg://...`
 
@@ -163,12 +163,14 @@ VITE_API_BASE_URL=https://your-backend.zeabur.app
 Zeabur 后端服务会使用：
 
 ```bash
-alembic upgrade head && _startup
+python scripts/wait_for_db.py && alembic upgrade head && _startup
 ```
+
+其中 `python scripts/wait_for_db.py` 会先轮询数据库连通性，避免 PostgreSQL 服务刚创建时 backend 因为连接过早而直接崩掉。
 
 其中 `_startup` 是 Zeabur 为 Python/FastAPI 自动生成的默认启动命令。
 
-也就是每次启动先做迁移，再启动 FastAPI。
+也就是每次启动先等数据库 ready，再做迁移，最后启动 FastAPI。
 
 ## 迁移失败后的重试方式
 
@@ -183,6 +185,12 @@ alembic upgrade head && _startup
 1. 先确保 backend 服务拉到最新代码
 2. 再确认 `DATABASE_URL` 指向的是一个干净的 PostgreSQL 库
 3. 最后点击 `Redeploy Service`
+
+如果你看到的是 `connection refused`：
+
+- 优先检查 backend 的 `DATABASE_URL` 现在是不是 `${POSTGRES_CONNECTION_STRING}`
+- 如果你之前把它展开成了固定连接串，删除旧值并改回引用，或改成新 PostgreSQL 服务 `Networking` 页里的最新内网地址
+- 如果变量没问题，多半只是数据库服务还没 ready；最新代码会先等待数据库再迁移
 
 如果你看到的是旧失败记录，而不是新代码的问题，清空旧库状态通常比在 Zeabur 控制台里反复重试更快。
 

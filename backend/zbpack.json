@@ -3,5 +3,5 @@
   "python": {
     "version": "3.12"
   },
-  "start_command": "alembic upgrade head && _startup"
+  "start_command": "python scripts/wait_for_db.py && alembic upgrade head && _startup"
 }
