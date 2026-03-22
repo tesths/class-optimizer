@@ -1,0 +1,5 @@
+Kenney Isometric Miniature Farm assets subset
+Source: https://kenney.nl/assets/isometric-miniature-farm
+License: CC0 1.0 Universal
+Downloaded: 2026-03-22
+Files included in this project are an extracted subset used for the garden scene.

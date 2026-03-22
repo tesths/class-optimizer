@@ -1,0 +1,13 @@
+OpenGameArt asset reference:
+https://opengameart.org/content/pixel-farm-and-shack
+
+File mirrored in this repository:
+- /farm-assets/crops/oga_crops_tileset.png
+
+License listed on the source page:
+- CC0 1.0 Universal
+- Author: pixel32
+- Attribution instruction on source page:
+  "Credit pixel32 if you feel like it."
+
+Snapshot date for this note: 2026-03-22

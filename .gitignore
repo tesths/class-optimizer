@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.coverage
+htmlcov/
+
+# Virtual environments
+backend/.venv/
+backend/venv/
+.venv/
+venv/
+
+# Frontend build and test artifacts
+node_modules
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+playwright-report/
+test-results/
+frontend/playwright-report/
+frontend/test-results/
+.playwright-mcp/
+coverage/
+tests/e2e/visual.spec.ts-snapshots/*Mobile-Chrome*.png
+
+# Local database files and backups
+test.db
+test_auth.db
+test_score.db
+backend/test.db
+backend/test_auth.db
+backend/test_score.db
+backend/data/*.db
+backend/data/*.db-*
+backend/data/*.db.bak-*
+
+# Keep committed backend data fixtures and docs
+!backend/data/README.md
+!backend/data/import_regression.xlsx
+!backend/data/import_invalid_content.xlsx
+!backend/data/import_large_batch.xlsx
+!backend/data/import_mixed_validation.xlsx
+
+# Environment files
+.env
+.env.*
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.*
+
+# Git / editor / platform helpers
+.vscode/
+.idea/
+.zeabur/
+.turbo/
+
+# Root-level local screenshots and exports
+/*.png
+/*.jpeg
+/*.jpg
+
+# Unused source asset dumps
+frontend/public/farm-assets/raw/
+
+# Local AI / editor helper files
+.claude/
+.codex-skills/
+.impeccable.md

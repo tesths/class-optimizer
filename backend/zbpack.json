@@ -1,0 +1,7 @@
+{
+  "$schema": "https://schema.zeabur.app/zbpack.json",
+  "python": {
+    "version": "3.12"
+  },
+  "start_command": "alembic upgrade head && _startup"
+}
