@@ -1,7 +1,8 @@
 {
   "$schema": "https://schema.zeabur.app/zbpack.json",
   "python": {
-    "version": "3.12"
+    "version": "3.12",
+    "entry": "app/main.py"
   },
   "start_command": "python scripts/wait_for_db.py && alembic upgrade head && _startup"
 }

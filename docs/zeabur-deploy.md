@@ -24,7 +24,7 @@
 ## 已做的仓库适配
 
 - `frontend/zbpack.json`：固定前端构建命令和输出目录
-- `backend/zbpack.json`：启动前先等待数据库就绪，再执行 Alembic 迁移
+- `backend/zbpack.json`：显式指定 `app/main.py` 为 Python 入口，启动前先等待数据库就绪，再执行 Alembic 迁移
 - `backend/requirements.txt`：加入 PostgreSQL 驱动 `psycopg[binary]`
 - `backend/app/core/config.py`：自动把 `postgresql://...` 转成 SQLAlchemy 可用的 `postgresql+psycopg://...`
 
@@ -171,6 +171,18 @@ python scripts/wait_for_db.py && alembic upgrade head && _startup
 其中 `_startup` 是 Zeabur 为 Python/FastAPI 自动生成的默认启动命令。
 
 也就是每次启动先等数据库 ready，再做迁移，最后启动 FastAPI。
+
+另外，这个仓库的 FastAPI 入口文件在 `backend/app/main.py`，不是 backend 根目录下的 `main.py`，所以 `zbpack.json` 里已经显式配置：
+
+```json
+{
+  "python": {
+    "entry": "app/main.py"
+  }
+}
+```
+
+这样 Zeabur 在执行 `_startup` 时会明确使用正确的入口文件。
 
 ## 迁移失败后的重试方式
 
